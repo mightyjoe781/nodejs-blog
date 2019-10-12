@@ -6,8 +6,16 @@ mongoose    =require("mongoose"),
 app         = express();
 
 // APP CONFIG
-
-mongoose.connect("mongodb://localhost/rest_blog_app");
+var uri = process.env.DATABASEURI || "mongodb://localhost/rest_blog_app"
+// mongoose.connect("mongodb://localhost/rest_blog_app");
+mongoose.connect(uri,{
+	useNewUrlParser:true,
+	useCreateINdex:true
+}).then(()=>{
+	console.log("connected to DB");
+}).catch(err => {
+	console.log("ERROR:",err.message);
+});
 app.set("view engine","ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}))
@@ -114,7 +122,7 @@ app.delete("/blogs/:id",function(req,res){
     //redirect somewhere
 })
 // LISTENER PROCESS
-
-app.listen(12345 ,function(){
-    console.log("Server started");
+var port = process.env.PORT || 31000
+app.listen(port, process.env.IP,function(){
+    console.log("Server started at port:"+ port);
 })
