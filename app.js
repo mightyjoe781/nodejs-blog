@@ -1,10 +1,13 @@
-var express = require("express"),
-methodOverride=require("method-override"),
-expressSanitizer = require("express-sanitizer"),
-bodyParser  = require("body-parser"),
-mongoose    =require("mongoose"),
-app         = express();
-
+var express           = require("express"),
+    methodOverride    = require("method-override"),
+    expressSanitizer  = require("express-sanitizer"),
+    bodyParser        = require("body-parser"),
+    mongoose          = require("mongoose"),
+    app               = express(),
+    passport          = require("passport"),
+    LocalStrategy     =require("passport-local"),
+    passportLocalMongoose=require("passport-local-mongoose"),
+    session             =require("express-session");
 // APP CONFIG
 var uri = process.env.DATABASEURI || "mongodb://localhost/rest_blog_app"
 // mongoose.connect("mongodb://localhost/rest_blog_app");
@@ -21,6 +24,18 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
+//authetication use
+app.use(session({
+    secret : "I hate bugs",
+    resave : false,
+    saveUninitialized : false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(function(req, res, next) {
+res.locals.currentUsername = req.user;
+next();
+});
 //MONGOOSE MODEL CONFIG
 
 var blogSchema = new mongoose.Schema({
@@ -40,6 +55,22 @@ var Blog = mongoose.model("Blog",blogSchema);
 //     body :"This is just one time thing"
 // });
 
+//user models
+var userSchema = new mongoose.Schema({
+    username:String,
+    password : String
+});
+userSchema.plugin(passportLocalMongoose);
+var User = mongoose.model("User",userSchema);
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use(function(req, res, next) {
+res.locals.currentUser = req.user;
+next();
+});
 // RESTFUL ROUTES
 
 app.get("/",function(req,res){
@@ -58,12 +89,12 @@ app.get("/blogs",function(req ,res){
     })
 });
 //NEW ROUTE
-app.get("/blogs/new",function(req,res){
+app.get("/blogs/new",isLoggedIn,function(req,res){
     res.render("new");
 });
 //Create ROUTE
 
-app.post("/blogs",function(req,res){
+app.post("/blogs",isLoggedIn,function(req,res){
     //create blog
     req.body.blog.body = req.sanitize(req.body.blog.body)
     Blog.create(req.body.blog,function(err,newblog){
@@ -121,6 +152,48 @@ app.delete("/blogs/:id",function(req,res){
     })
     //redirect somewhere
 })
+//=====================
+//AUTHENTICATION ROUTEs
+//=====================
+//login routes
+app.get("/login",function(req,res){
+	res.render("login");
+})
+
+app.post("/login",passport.authenticate('local',{
+    successRedirect: '/blogs',
+    failureRedirect: '/login'
+}),function(req,res){});
+//logout routes
+
+app.get('/logout',function(req,res){
+    req.logout();
+    res.redirect("/");
+})
+
+//register routes
+app.get("/register",function(req,res){
+    res.render("register");
+})
+app.post("/register",function(req,res){
+    User.register(new User({username:req.body.username}),req.body.password,function(err,user){
+        if(err){
+            console.log(err);
+            return res.redirect("/register");
+        }
+        password.authenticate('local')(req,res,function(){
+            res.redirect("/blogs");
+        })
+    })
+})
+//middleware to check login
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
+
 // LISTENER PROCESS
 var port = process.env.PORT || 31000
 app.listen(port, process.env.IP,function(){
