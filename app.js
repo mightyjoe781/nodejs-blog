@@ -116,7 +116,6 @@ app.post("/blogs",isLoggedIn,function(req,res){
         body:body,
         author:author
     }    
-    console.log(newPost);
     Blog.create(newPost,function(err,newblog){
         if(err){
             res.render("new");
@@ -138,7 +137,7 @@ app.get("/blogs/:id",function(req,res){
 });
 
 //EDIT ROUTE
-app.get("/blogs/:id/edit",function(req,res){
+app.get("/blogs/:id/edit",checkBlogOwner,function(req,res){
     Blog.findById(req.params.id,function(err,foundBlog){
         if(err){
             res.redirect("/blogs");
@@ -148,7 +147,7 @@ app.get("/blogs/:id/edit",function(req,res){
     });
 });
 //UPDATE ROUTE
-app.put("/blogs/:id",function(req,res){
+app.put("/blogs/:id",checkBlogOwner,function(req,res){
     req.body.blog.body = req.sanitize(req.body.blog.body)
     Blog.findByIdAndUpdate(req.params.id, req.body.blog,function(err,updateBlog){
         if(err){
@@ -160,7 +159,7 @@ app.put("/blogs/:id",function(req,res){
 })
 
 //DELETE Route
-app.delete("/blogs/:id",function(req,res){
+app.delete("/blogs/:id",checkBlogOwner,function(req,res){
     
     //destroy blog
     Blog.findByIdAndRemove(req.params.id,function(err){
@@ -212,6 +211,24 @@ function isLoggedIn(req, res, next){
         return next();
     }
     res.redirect("/login");
+}
+//middleware to check user ownership
+function checkBlogOwner(req,res,next){
+    if(req.isAuthenticated()){
+        Blog.findById(req.params.id,function(err,foundBlog){
+            if(err){
+                res.redirect("back");
+            } else {
+                if(foundBlog.author.id.equals(req.user._id)){
+                    next()
+                } else {
+                    res.redirect("back");
+                }
+            }
+        })
+    } else {
+        res.redirect("back");
+    }
 }
 
 // LISTENER PROCESS
