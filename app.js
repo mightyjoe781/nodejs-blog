@@ -198,7 +198,7 @@ app.post("/register",function(req,res){
     User.register(new User({username:req.body.username}),req.body.password,function(err,user){
         if(err){
             console.log(err);
-            return res.redirect("/register");
+            return res.render("register");
         }
         password.authenticate('local')(req,res,function(){
             res.redirect("/blogs");
