@@ -42,6 +42,13 @@ var blogSchema = new mongoose.Schema({
     title : String,
     image : String,
     body: String,
+    author : {
+        id: {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "User"
+        },
+        username : String
+    },
     created : {type: Date, default : Date.now}
 });
 
@@ -96,8 +103,21 @@ app.get("/blogs/new",isLoggedIn,function(req,res){
 
 app.post("/blogs",isLoggedIn,function(req,res){
     //create blog
-    req.body.blog.body = req.sanitize(req.body.blog.body)
-    Blog.create(req.body.blog,function(err,newblog){
+    var title = req.body.blog.title;
+    var image = req.body.blog.image;
+    var body = req.sanitize(req.body.blog.body)
+    var author = {
+        id : req.user._id,
+        username : req.user.username
+    }
+    var newPost = {
+        title :title,
+        image : image,
+        body:body,
+        author:author
+    }    
+    console.log(newPost);
+    Blog.create(newPost,function(err,newblog){
         if(err){
             res.render("new");
         } else {
