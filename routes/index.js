@@ -25,7 +25,7 @@ router.post("/register",function(req,res){
             console.log(err);
             return res.render("register");
         }
-        password.authenticate('local')(req,res,function(){
+        passport.authenticate('local')(req,res,function(){
             res.redirect("/blogs");
         })
     })
