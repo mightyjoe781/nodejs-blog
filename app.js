@@ -41,21 +41,19 @@ app.use(session({
     resave : false,
     saveUninitialized : false
 }));
+
+//pasport config
 app.use(passport.initialize());
 app.use(passport.session());
-
-//pass all pages current Username
-// app.use(function(req, res, next) {
-// res.locals.currentUsername = req.user;
-// next();
-// });
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next) {
-res.locals.currentUser = req.user;
+    res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
 next();
 });
 app.use(authRoutes);
