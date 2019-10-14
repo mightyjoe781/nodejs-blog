@@ -3,6 +3,7 @@ var express           = require("express"),
     expressSanitizer  = require("express-sanitizer"),
     bodyParser        = require("body-parser"),
     mongoose          = require("mongoose"),
+    flash             = require("connect-flash"),
     app               = express(),
     passport          = require("passport"),
     LocalStrategy     =require("passport-local"),
@@ -33,6 +34,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
+app.use(flash());
 //authetication use
 app.use(session({
     secret : "I hate bugs",
