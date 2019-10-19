@@ -9,10 +9,12 @@ var express           = require("express"),
     LocalStrategy     =require("passport-local"),
     session             =require("express-session"),
     Blog = require("./models/blog"),
-    User = require("./models/user");
+    User = require("./models/user"),
+    Comment = require("./models/comment");
 //requiring routes
 var blogsRoutes = require("./routes/blogs"),
-    authRoutes  = require("./routes/index");
+    authRoutes  = require("./routes/index"),
+    commentsRoutes = require("./routes/comments");
 
 
 
@@ -58,6 +60,7 @@ next();
 });
 app.use(authRoutes);
 app.use(blogsRoutes);
+// app.use(commentsRoutes);
 // LISTENER PROCESS
 var port = process.env.PORT || 31000
 app.listen(port, process.env.IP,function(){

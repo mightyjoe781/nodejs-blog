@@ -6,7 +6,7 @@ var User = require("../models/user");
 // RESTFUL ROUTES
 
 router.get("/",function(req,res){
-    res.redirect("/blogs");
+    res.render("landing.ejs");
 });
 
 //=====================
