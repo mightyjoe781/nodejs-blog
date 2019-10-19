@@ -12,6 +12,10 @@ var blogSchema = new mongoose.Schema({
         },
         username : String
     },
+    comments: [{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Comment"
+    }],
     created : {type: Date, default : Date.now}
 });
 // JUST A TEST DATA PASSED TO DATABASE

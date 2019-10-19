@@ -14,7 +14,7 @@ var express           = require("express"),
 //requiring routes
 var blogsRoutes = require("./routes/blogs"),
     authRoutes  = require("./routes/index"),
-    commentsRoutes = require("./routes/comments");
+    commentRoutes = require("./routes/comments");
 
 
 
@@ -58,8 +58,10 @@ app.use(function(req, res, next) {
     res.locals.success = req.flash("success");
 next();
 });
+
 app.use(authRoutes);
 app.use(blogsRoutes);
+app.use("/blogs/:id/comments", commentRoutes);
 // app.use(commentsRoutes);
 // LISTENER PROCESS
 var port = process.env.PORT || 31000
