@@ -10,13 +10,13 @@ router.get("/blogs",function(req ,res){
         if(err){
             console.log(err);
         } else {
-            res.render("index",{blogs:allblogs});
+            res.render("./blogs/index",{blogs:allblogs});
         }
     })
 });
 //NEW ROUTE
 router.get("/blogs/new",middleware.isLoggedIn,function(req,res){
-    res.render("new");
+    res.render("./blogs/new");
 });
 //Create ROUTE
 
@@ -37,7 +37,7 @@ router.post("/blogs",middleware.isLoggedIn,function(req,res){
     }    
     Blog.create(newPost,function(err,newblog){
         if(err){
-            res.render("new");
+            res.render("./blogs/new");
         } else {
              //then redirect to the index
              res.redirect("/blogs");
@@ -51,7 +51,7 @@ router.get("/blogs/:id",function(req,res){
             console.log(err);
             res.redirect("/blogs");
         } else {
-            res.render("show",{blog: foundBlog})
+            res.render("./blogs/show",{blog: foundBlog})
         }
     });
 });
@@ -62,7 +62,7 @@ router.get("/blogs/:id/edit",middleware.checkBlogOwner,function(req,res){
         if(err){
             res.redirect("/blogs");
         } else {
-            res.render("edit",{blog:foundBlog});
+            res.render("./blogs/edit",{blog:foundBlog});
         }
     });
 });
