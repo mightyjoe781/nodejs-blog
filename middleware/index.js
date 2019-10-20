@@ -1,4 +1,6 @@
 var Blog = require("../models/blog");
+var Comment = require("../models/comment");
+
 var middlewareObj = {};
 
 middlewareObj.checkBlogOwner = function(req,res,next){
@@ -9,7 +11,7 @@ middlewareObj.checkBlogOwner = function(req,res,next){
                 res.redirect("back");
             } else {
                 if(foundBlog.author.id.equals(req.user._id)){
-                    next()
+                    next();
                 } else {
                     req.flash("error","Permission Denied!");
                     res.redirect("back");
@@ -31,11 +33,13 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
                if(foundComment.author.id.equals(req.user._id)) {
                    next();
                } else {
+               	req.flash("error","Permission Denied");
                    res.redirect("back");
                }
               }
            });
        } else {
+       		req.flash("error","Login First!");
            res.redirect("back");
        }
    }

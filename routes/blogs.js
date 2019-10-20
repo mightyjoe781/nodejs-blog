@@ -1,16 +1,16 @@
 var express =require("express");
-var router =express.Router({mergeParams: true});
+var router =express.Router();
 var Blog = require("../models/blog");
 var middleware =require("../middleware");
 
 
 //INDEX ROUTE
 router.get("/blogs",function(req ,res){
-    Blog.find({},function(err,blogs){
+    Blog.find({},function(err,allblogs){
         if(err){
-            console.log("ERROR!");
+            console.log(err);
         } else {
-            res.render("index",{blogs : blogs});
+            res.render("index",{blogs:allblogs});
         }
     })
 });
@@ -46,8 +46,9 @@ router.post("/blogs",middleware.isLoggedIn,function(req,res){
 });
 // SHOW ROUTE
 router.get("/blogs/:id",function(req,res){
-    Blog.findById(req.params.id,function(err, foundBlog){
+    Blog.findById(req.params.id).populate("comments").exec(function(err, foundBlog){
         if(err){
+            console.log(err);
             res.redirect("/blogs");
         } else {
             res.render("show",{blog: foundBlog})
