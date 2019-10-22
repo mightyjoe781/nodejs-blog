@@ -14,7 +14,7 @@ i.icon {
 	font-size: 1.3em;
 }
 .column.row {
-    align-items: center;
+    margin: auto;
 }
 .container.main.segment{
     margin-top: 1em;

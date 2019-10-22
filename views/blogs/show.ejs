@@ -34,20 +34,20 @@
                     <div class="content ui grid">
                             <div class="two column row">
                                 <div class="column"><strong><%= comment.author.username %></strong></div>
-                                <div class="column"><span class="right floated column"><%= comment.created.toDateString() %> at <%= comment.created.toTimeString()%></span></div>
+                                <div class="right aligned column"><%= comment.created.toDateString() %> at <%= comment.created.toLocaleTimeString()%></div>
                             </div>
-                            <div class="one column row">
+                            <div id="comblk" class="one column row">
                                 <div class="left floated column">
                                     <p>
                                         <%= comment.text %>
                                     </p>
                                     <% if((currentUser && comment.author.id.equals(currentUser._id)) || (currentUser && currentUser.isAdmin)){ %>
-                                        <span class="text-right" >
+                                        <div class="text-right" >
                                             <a class="btn btn-xs btn-warning" 
                                         href="/blogs/<%=blog._id %>/comments/<%=comment._id %>/edit">Edit</a>
                                         <form style="display: inline" id="delete-form" action="/blogs/<%=blog._id %>/comments/<%=comment._id %>?_method=DELETE" method="POST">
                                             <input type="submit" class="btn btn-xs btn-danger" value="Delete">
-                                        </span>
+                                        </div>
                                     <% } %>                                    
                                 </div>      
                             </div>
