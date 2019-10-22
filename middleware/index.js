@@ -10,7 +10,7 @@ middlewareObj.checkBlogOwner = function(req,res,next){
                 req.flash("error","Blog not found");
                 res.redirect("back");
             } else {
-                if(foundBlog.author.id.equals(req.user._id)){
+                if(foundBlog.author.id.equals(req.user._id) || req.user.isAdmin){
                     next();
                 } else {
                     req.flash("error","Permission Denied!");
@@ -30,7 +30,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
                   res.redirect("back");
               }  else {
                   // does user own the comment?
-               if(foundComment.author.id.equals(req.user._id)) {
+               if(foundComment.author.id.equals(req.user._id) || req.user.isAdmin) {
                    next();
                } else {
                	req.flash("error","Permission Denied");

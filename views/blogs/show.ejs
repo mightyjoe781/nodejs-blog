@@ -1,5 +1,4 @@
 <% include ../partials/header %>
-
 <div class="ui main text container segment">
     <div class="ui huge header"><%= blog.title %></div>
     <div class="ui top attached">
@@ -15,7 +14,7 @@
             <div class="description">
             <p> <%- blog.body%></p>    
             </div>
-            <% if(currentUser && blog.author.id.equals(currentUser._id)){ %>
+            <% if(currentUser && blog.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
             <a class="ui orange basic button" href="/blogs/<%= blog._id%>/edit">Edit</a>
             <form id="delete" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
             <button class="ui red basic button">Delete</button>
@@ -42,7 +41,7 @@
                                     <p>
                                         <%= comment.text %>
                                     </p>
-                                    <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                                    <% if((currentUser && comment.author.id.equals(currentUser._id)) || (currentUser && currentUser.isAdmin)){ %>
                                         <span class="text-right" >
                                             <a class="btn btn-xs btn-warning" 
                                         href="/blogs/<%=blog._id %>/comments/<%=comment._id %>/edit">Edit</a>
