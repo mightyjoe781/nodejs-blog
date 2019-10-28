@@ -1,13 +1,17 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <title>Blog App</title>
+        <meta charset="utf-8">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
         <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
         <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+        <title>Blog App</title>
     </head>
     <body>
-        <div class="ui fixed inverted menu">
+        <!-- <div class="ui fixed inverted menu">
             <div class="ui container">
                 <div class="header item"><i class="blogger icon"></i><a href="/">Blog Site</a></div>
                 <a href="/blogs" class="item">Home</a>
@@ -23,18 +27,39 @@
                 </div>
                 
             </div>
-            
-        </div>
 
-        <div class="ui main text segmented container">
-            <% if(error && error.length > 0){ %>
-            <div class="alert alert-danger" role="alert">
-                <%= error %>
+            
+        </div> -->
+
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container">
+                    <div class="navbar-header d-flex align-items-center">
+                            <i class="material-icons md-36 md-light">collections</i>
+                            <a class="navbar-brand" href="/"> Blog Site</a>
+                            <a href="/blogs" class="navbar-brand">Home</a>
+                            <a href="/blogs/new" class="navbar-brand">New Post</a>
+                        </div>
+                            <div class="d-flex right menu justify-content-end">
+                                    <% if(!currentUser){ %>
+                                    <div class="item"><a href="/login" class="ui inverted button">Log in</a></div>
+                                    <div class="item"><a href="/register" class="ui inverted button">Sign Up</a></div>
+                                    <% } else { %>
+                                    <div class="item"><a href="#" class="ui inverted button">Signed in as <%= currentUser.username %></a></div>
+                                    <div class="item"><a href="/logout" class="ui inverted button">Log out</a></div>
+                                    <% } %>
+                                </div>
             </div>
-            <% } %>
-            <% if(success && success.length > 0){ %>
-            <div class="alert alert-success" role="alert">
-                <%= success %>
-            </div>
-            <% } %>
+        </nav>       
+        <div class="container">
+        
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+                <% } %>
         </div>
