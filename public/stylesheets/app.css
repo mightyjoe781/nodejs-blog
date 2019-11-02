@@ -50,6 +50,7 @@ section .section-title {
 }
 #footer {
     background: grey !important;
+    bottom:0;
 }
 #foot2 {
     text-align: center;
@@ -60,14 +61,15 @@ section .section-title {
     position: relative;
     bottom: 0;
 }
-#foot3 {
+#trademark {
     text-align: center;
     padding: 0;
     background:steelblue;
     color:white;
     clear: both;
-    position: relative;
-    margin-bottom: -200em;
+    position: absolute;
+    bottom : 0;
+    width: 100%;
 }
 #footer h5{
 	padding-left: 10px;
@@ -144,4 +146,10 @@ p.bio {
     margin-bottom: 10px;
 }
 }
-
+/* styling fot github octicon corners responsive on hover */
+.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}
+@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}
+@media (max-width:500px){.github-corner:hover
+ .octo-arm{animation:none}
+ .github-corner 
+ .octo-arm{animation:octocat-wave 560ms ease-in-out}}
