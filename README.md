@@ -1,4 +1,6 @@
 # nodejs-blog
-This repository contains simple blog website made out of Nodejs and semantic ui only.
-This is just a study project so if you do want to contribute or give suggestions do add documentation and comments.
-beta testing
+
+This repository contains a Simple Blog Website. Developed using Nodejs and Semantic UI.
+This is a Study Project.
+You can Contribute, Comment and give Suggestions for the betterment of the Project.
+Thank You !!!
