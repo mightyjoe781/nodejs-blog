@@ -47,9 +47,9 @@ Thank You !!!<br>
 2019-11-04T16:25:39.537+0530 I CONTROL  [initandlisten] now exiting
 2019-11-04T16:25:39.537+0530 I CONTROL  [initandlisten] shutting down with code:48
 </pre></p>
-Then try this command
-<code>mongo</code>
-<code>use admin</code>
-<code>db.shutdowmServer()</code>
-<code>db.shutdowmServer()</code>
+<h4>try these commands</h4><br>
+<code>mongo</code><br>
+<code>use admin</code><br>
+<code>db.shutdowmServer()</code><br>
+<code>db.shutdowmServer()</code><br>
 this error is commonly due to some other service running on the port which mongo service listen is preoccupied by some other service
